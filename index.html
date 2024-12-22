@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="css/app.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Professional Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            background-color: #f8f9fa;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -17,23 +17,22 @@
         }
 
         .calculator {
-            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            background: #ffffff;
             border-radius: 20px;
-            box-shadow: 5px 5px 15px #c1c1c1, -5px -5px 15px #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             padding: 20px;
-            width: 300px;
+            width: 320px;
         }
 
         .display {
-            background: #e6e6e6;
+            background: #f1f1f1;
             border-radius: 10px;
-            box-shadow: inset 3px 3px 10px #c1c1c1, inset -3px -3px 10px #ffffff;
             height: 60px;
             margin-bottom: 20px;
             text-align: right;
             font-size: 2rem;
             line-height: 60px;
-            padding: 0 10px;
+            padding: 0 15px;
             overflow: hidden;
         }
 
@@ -44,32 +43,43 @@
         }
 
         .button {
-            background: linear-gradient(145deg, #ffffff, #e6e6e6);
-            border-radius: 10px;
-            box-shadow: 3px 3px 6px #c1c1c1, -3px -3px 6px #ffffff;
             font-size: 1.2rem;
-            padding: 20px;
+            padding: 15px;
             text-align: center;
             cursor: pointer;
             user-select: none;
-            transition: 0.2s ease;
+            transition: all 0.2s ease-in-out;
+            border: none;
+            border-radius: 10px;
+        }
+
+        .button:hover {
+            transform: scale(1.05);
         }
 
         .button:active {
-            box-shadow: inset 3px 3px 6px #c1c1c1, inset -3px -3px 6px #ffffff;
+            transform: scale(0.95);
         }
 
         .button.operation {
-            background: linear-gradient(145deg, #ffe6e6, #ffc1c1);
+            background-color: #ffdddd;
+            color: #d9534f;
         }
 
         .button.equal {
             grid-column: span 2;
-            background: linear-gradient(145deg, #e6ffcc, #ccff99);
+            background-color: #d4edda;
+            color: #28a745;
         }
 
         .button.clear {
-            background: linear-gradient(145deg, #ffe6cc, #ffc299);
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .button {
+            background-color: #e9ecef;
+            color: #343a40;
         }
     </style>
 </head>
@@ -77,24 +87,24 @@
     <div class="calculator">
         <div id="display" class="display">0</div>
         <div class="buttons">
-            <div class="button clear" onclick="clearDisplay()">C</div>
-            <div class="button" onclick="appendValue('%')">%</div>
-            <div class="button" onclick="appendValue('/')">/</div>
-            <div class="button operation" onclick="appendValue('*')">x</div>
-            <div class="button" onclick="appendValue('7')">7</div>
-            <div class="button" onclick="appendValue('8')">8</div>
-            <div class="button" onclick="appendValue('9')">9</div>
-            <div class="button operation" onclick="appendValue('-')">-</div>
-            <div class="button" onclick="appendValue('4')">4</div>
-            <div class="button" onclick="appendValue('5')">5</div>
-            <div class="button" onclick="appendValue('6')">6</div>
-            <div class="button operation" onclick="appendValue('+')">+</div>
-            <div class="button" onclick="appendValue('1')">1</div>
-            <div class="button" onclick="appendValue('2')">2</div>
-            <div class="button" onclick="appendValue('3')">3</div>
-            <div class="button equal" onclick="calculate()">=</div>
-            <div class="button" onclick="appendValue('0')">0</div>
-            <div class="button" onclick="appendValue('.')">.</div>
+            <button class="button clear" onclick="clearDisplay()">C</button>
+            <button class="button" onclick="appendValue('%')">%</button>
+            <button class="button" onclick="appendValue('/')">/</button>
+            <button class="button operation" onclick="appendValue('*')">x</button>
+            <button class="button" onclick="appendValue('7')">7</button>
+            <button class="button" onclick="appendValue('8')">8</button>
+            <button class="button" onclick="appendValue('9')">9</button>
+            <button class="button operation" onclick="appendValue('-')">-</button>
+            <button class="button" onclick="appendValue('4')">4</button>
+            <button class="button" onclick="appendValue('5')">5</button>
+            <button class="button" onclick="appendValue('6')">6</button>
+            <button class="button operation" onclick="appendValue('+')">+</button>
+            <button class="button" onclick="appendValue('1')">1</button>
+            <button class="button" onclick="appendValue('2')">2</button>
+            <button class="button" onclick="appendValue('3')">3</button>
+            <button class="button equal" onclick="calculate()">=</button>
+            <button class="button" onclick="appendValue('0')">0</button>
+            <button class="button" onclick="appendValue('.')">.</button>
         </div>
     </div>
 
@@ -120,6 +130,26 @@
                 display.textContent = 'Error';
             }
         }
+
+        // Listen for keyboard input
+        document.addEventListener('keydown', (event) => {
+            const key = event.key;
+
+            if (!isNaN(key)) {
+                appendValue(key);
+            } else if (['+', '-', '*', '/', '%'].includes(key)) {
+                appendValue(key);
+            } else if (key === 'Enter') {
+                calculate();
+            } else if (key === 'Backspace') {
+                display.textContent = display.textContent.slice(0, -1) || '0';
+            } else if (key === 'c' || key === 'C') {
+                clearDisplay();
+            } else if (key === '.') {
+                appendValue('.');
+            }
+        });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
