@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .calculator {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            border-radius: 20px;
+            box-shadow: 5px 5px 15px #c1c1c1, -5px -5px 15px #ffffff;
+            padding: 20px;
+            width: 300px;
+        }
+
+        .display {
+            background: #e6e6e6;
+            border-radius: 10px;
+            box-shadow: inset 3px 3px 10px #c1c1c1, inset -3px -3px 10px #ffffff;
+            height: 60px;
+            margin-bottom: 20px;
+            text-align: right;
+            font-size: 2rem;
+            line-height: 60px;
+            padding: 0 10px;
+            overflow: hidden;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .button {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            border-radius: 10px;
+            box-shadow: 3px 3px 6px #c1c1c1, -3px -3px 6px #ffffff;
+            font-size: 1.2rem;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+            transition: 0.2s ease;
+        }
+
+        .button:active {
+            box-shadow: inset 3px 3px 6px #c1c1c1, inset -3px -3px 6px #ffffff;
+        }
+
+        .button.operation {
+            background: linear-gradient(145deg, #ffe6e6, #ffc1c1);
+        }
+
+        .button.equal {
+            grid-column: span 2;
+            background: linear-gradient(145deg, #e6ffcc, #ccff99);
+        }
+
+        .button.clear {
+            background: linear-gradient(145deg, #ffe6cc, #ffc299);
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div id="display" class="display">0</div>
+        <div class="buttons">
+            <div class="button clear" onclick="clearDisplay()">C</div>
+            <div class="button" onclick="appendValue('%')">%</div>
+            <div class="button" onclick="appendValue('/')">/</div>
+            <div class="button operation" onclick="appendValue('*')">x</div>
+            <div class="button" onclick="appendValue('7')">7</div>
+            <div class="button" onclick="appendValue('8')">8</div>
+            <div class="button" onclick="appendValue('9')">9</div>
+            <div class="button operation" onclick="appendValue('-')">-</div>
+            <div class="button" onclick="appendValue('4')">4</div>
+            <div class="button" onclick="appendValue('5')">5</div>
+            <div class="button" onclick="appendValue('6')">6</div>
+            <div class="button operation" onclick="appendValue('+')">+</div>
+            <div class="button" onclick="appendValue('1')">1</div>
+            <div class="button" onclick="appendValue('2')">2</div>
+            <div class="button" onclick="appendValue('3')">3</div>
+            <div class="button equal" onclick="calculate()">=</div>
+            <div class="button" onclick="appendValue('0')">0</div>
+            <div class="button" onclick="appendValue('.')">.</div>
+        </div>
+    </div>
+
+    <script>
+        const display = document.getElementById('display');
+
+        function clearDisplay() {
+            display.textContent = '0';
+        }
+
+        function appendValue(value) {
+            if (display.textContent === '0') {
+                display.textContent = value;
+            } else {
+                display.textContent += value;
+            }
+        }
+
+        function calculate() {
+            try {
+                display.textContent = eval(display.textContent);
+            } catch (error) {
+                display.textContent = 'Error';
+            }
+        }
+    </script>
+</body>
+</html>
